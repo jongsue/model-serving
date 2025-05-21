@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: model-serving
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/jongsue/model-serving.git  # 실제 Git 저장소 URL
+    targetRevision: HEAD  # 또는 특정 브랜치/태그
+    path: chart  # Helm 차트 경로
+    helm:
+      valueFiles:
+      - values.yaml
+      # 환경에 따라 다른 값 파일 선택
+      # - values-dev.yaml
+      # - values-prod.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: model-serving
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true

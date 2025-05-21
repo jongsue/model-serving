@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.redis.name }}
+  namespace: {{ include "model-serving.namespace" . }}
+  labels:
+    {{- include "model-serving.labels" . | nindent 4 }}
+    app: {{ .Values.redis.name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.redis.name }}
+  template:
+    metadata:
+      labels:
+        {{- include "model-serving.labels" . | nindent 8 }}
+        app: {{ .Values.redis.name }}
+    spec:
+      containers:
+      - name: {{ .Values.redis.name }}
+        image: "{{ .Values.redis.image.repository }}:{{ .Values.redis.image.tag }}"
+        ports:
+        - containerPort: {{ .Values.redis.service.port }}
+        resources:
+          {{- toYaml .Values.redis.resources | nindent 10 }}

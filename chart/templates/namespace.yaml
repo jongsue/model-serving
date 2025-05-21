@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ include "model-serving.namespace" . }}
+  labels:
+    {{- include "model-serving.labels" . | nindent 4 }}
+    environment: {{ .Values.global.environment }}

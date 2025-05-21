@@ -1,0 +1,1 @@
+docker run --net=host --ipc=host -e DISPLAY=$DISPLAY -itd --name k8s-test --privileged -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/workspaces ubuntu:latest bash
